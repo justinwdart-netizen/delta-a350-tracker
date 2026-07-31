@@ -1,38 +1,38 @@
 {
-  "fetch_timestamp_utc": "2026-07-31T13:44:30.699818+00:00",
+  "fetch_timestamp_utc": "2026-07-31T13:45:01.035938+00:00",
   "fetch_mode": "manual",
   "flight_numbers_queried": [
-    "DL388"
+    "DL389"
   ],
   "records": [
     {
       "flight_date": "2026-07-31",
-      "flight_status": "active",
+      "flight_status": "scheduled",
       "departure": {
-        "airport": "Shanghai Pudong International",
-        "timezone": "Asia/Shanghai",
-        "iata": "PVG",
-        "icao": "ZSPD",
-        "terminal": "1",
-        "gate": "24",
-        "delay": null,
-        "scheduled": "2026-07-31T09:55:00+00:00",
-        "estimated": "2026-07-31T09:55:00+00:00",
-        "actual": "2026-07-31T10:15:00+00:00",
-        "estimated_runway": "2026-07-31T10:15:00+00:00",
-        "actual_runway": "2026-07-31T10:15:00+00:00"
-      },
-      "arrival": {
         "airport": "Detroit Metropolitan Wayne County",
         "timezone": "America/Detroit",
         "iata": "DTW",
         "icao": "KDTW",
         "terminal": "M",
-        "gate": "A28",
-        "baggage": "INTL",
-        "scheduled": "2026-07-31T12:10:00+00:00",
+        "gate": "A30",
         "delay": null,
-        "estimated": "2026-07-31T11:42:00+00:00",
+        "scheduled": "2026-07-31T12:20:00+00:00",
+        "estimated": "2026-07-31T12:20:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Shanghai Pudong International",
+        "timezone": "Asia/Shanghai",
+        "iata": "PVG",
+        "icao": "ZSPD",
+        "terminal": "1",
+        "gate": "21",
+        "baggage": null,
+        "scheduled": "2026-08-01T15:25:00+00:00",
+        "delay": 10,
+        "estimated": null,
         "actual": null,
         "estimated_runway": null,
         "actual_runway": null
@@ -43,53 +43,53 @@
         "icao": "DAL"
       },
       "flight": {
-        "number": "388",
-        "iata": "DL388",
-        "icao": "DAL388",
+        "number": "389",
+        "iata": "DL389",
+        "icao": "DAL389",
         "codeshared": null
       },
       "aircraft": {
         "registration": null,
         "iata": null,
         "icao": null,
-        "icao24": "A65449"
+        "icao24": "A661C7"
       },
       "live": null,
-      "_fetch_timestamp_utc": "2026-07-31T13:44:30.699818+00:00",
-      "_fetch_flight_iata_queried": "DL388",
+      "_fetch_timestamp_utc": "2026-07-31T13:45:01.035938+00:00",
+      "_fetch_flight_iata_queried": "DL389",
       "_fetch_mode": "manual"
     },
     {
       "flight_date": "2026-07-30",
-      "flight_status": "landed",
+      "flight_status": "scheduled",
       "departure": {
-        "airport": "Shanghai Pudong International",
-        "timezone": "Asia/Shanghai",
-        "iata": "PVG",
-        "icao": "ZSPD",
-        "terminal": "1",
-        "gate": "24",
-        "delay": null,
-        "scheduled": "2026-07-30T09:55:00+00:00",
-        "estimated": "2026-07-30T09:55:00+00:00",
-        "actual": "2026-07-30T10:37:00+00:00",
-        "estimated_runway": "2026-07-30T10:37:00+00:00",
-        "actual_runway": "2026-07-30T10:37:00+00:00"
-      },
-      "arrival": {
         "airport": "Detroit Metropolitan Wayne County",
         "timezone": "America/Detroit",
         "iata": "DTW",
         "icao": "KDTW",
         "terminal": "M",
-        "gate": "A36",
-        "baggage": "I-3",
-        "scheduled": "2026-07-30T12:10:00+00:00",
-        "delay": null,
-        "estimated": "2026-07-30T11:52:00+00:00",
-        "actual": "2026-07-30T11:52:00+00:00",
-        "estimated_runway": "2026-07-30T11:52:00+00:00",
-        "actual_runway": "2026-07-30T11:52:00+00:00"
+        "gate": "A40",
+        "delay": 58,
+        "scheduled": "2026-07-30T12:20:00+00:00",
+        "estimated": "2026-07-30T12:20:00+00:00",
+        "actual": "2026-07-30T13:21:00+00:00",
+        "estimated_runway": "2026-07-30T13:21:00+00:00",
+        "actual_runway": "2026-07-30T13:21:00+00:00"
+      },
+      "arrival": {
+        "airport": "Shanghai Pudong International",
+        "timezone": "Asia/Shanghai",
+        "iata": "PVG",
+        "icao": "ZSPD",
+        "terminal": "1",
+        "gate": "21",
+        "baggage": "15",
+        "scheduled": "2026-07-31T15:25:00+00:00",
+        "delay": 57,
+        "estimated": "2026-07-31T16:22:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
       },
       "airline": {
         "name": "Delta Air Lines",
@@ -97,20 +97,20 @@
         "icao": "DAL"
       },
       "flight": {
-        "number": "388",
-        "iata": "DL388",
-        "icao": "DAL388",
+        "number": "389",
+        "iata": "DL389",
+        "icao": "DAL389",
         "codeshared": null
       },
       "aircraft": {
         "registration": null,
         "iata": null,
         "icao": null,
-        "icao24": "A65092"
+        "icao24": "A66935"
       },
       "live": null,
-      "_fetch_timestamp_utc": "2026-07-31T13:44:30.699818+00:00",
-      "_fetch_flight_iata_queried": "DL388",
+      "_fetch_timestamp_utc": "2026-07-31T13:45:01.035938+00:00",
+      "_fetch_flight_iata_queried": "DL389",
       "_fetch_mode": "manual"
     }
   ]
