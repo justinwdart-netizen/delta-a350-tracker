@@ -67,9 +67,19 @@ def fetch_flight(flight_iata):
 def main():
     os.makedirs(DATA_DIR, exist_ok=True)
 
-    start = load_rotation_index()
-    batch = [FULL_ROSTER[(start + i) % len(FULL_ROSTER)] for i in range(FLIGHT_NUMBERS_PER_RUN)]
-    save_rotation_index((start + FLIGHT_NUMBERS_PER_RUN) % len(FULL_ROSTER))
+    manual_flight = os.environ.get("MANUAL_FLIGHT_NUMBER", "").strip().upper()
+
+    if manual_flight:
+        # Manual on-demand lookup: query exactly this one flight, don't touch
+        # the rotation state at all (so it doesn't skip/duplicate the next
+        # scheduled batch).
+        batch = [manual_flight]
+        mode = "manual"
+    else:
+        start = load_rotation_index()
+        batch = [FULL_ROSTER[(start + i) % len(FULL_ROSTER)] for i in range(FLIGHT_NUMBERS_PER_RUN)]
+        save_rotation_index((start + FLIGHT_NUMBERS_PER_RUN) % len(FULL_ROSTER))
+        mode = "rotation"
 
     fetch_ts = datetime.now(timezone.utc).isoformat()
     latest_results = []
@@ -85,6 +95,7 @@ def main():
         for rec in records:
             rec["_fetch_timestamp_utc"] = fetch_ts
             rec["_fetch_flight_iata_queried"] = flight_iata
+            rec["_fetch_mode"] = mode
             latest_results.append(rec)
             with open(HISTORY_PATH, "a") as f:
                 f.write(json.dumps(rec) + "\n")
@@ -92,11 +103,12 @@ def main():
     with open(LATEST_PATH, "w") as f:
         json.dump({
             "fetch_timestamp_utc": fetch_ts,
+            "fetch_mode": mode,
             "flight_numbers_queried": batch,
             "records": latest_results,
         }, f, indent=2)
 
-    print(f"Queried {batch}, got {len(latest_results)} records, appended to {HISTORY_PATH}")
+    print(f"[{mode}] Queried {batch}, got {len(latest_results)} records, appended to {HISTORY_PATH}")
 
 
 if __name__ == "__main__":
