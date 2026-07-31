@@ -1,37 +1,37 @@
 {
-  "fetch_timestamp_utc": "2026-07-31T13:42:43.639149+00:00",
+  "fetch_timestamp_utc": "2026-07-31T13:43:10.670064+00:00",
   "fetch_mode": "manual",
   "flight_numbers_queried": [
-    "DL39"
+    "DL280"
   ],
   "records": [
     {
       "flight_date": "2026-07-31",
-      "flight_status": "scheduled",
+      "flight_status": "active",
       "departure": {
-        "airport": "Los Angeles International",
-        "timezone": "America/Los_Angeles",
-        "iata": "LAX",
-        "icao": "KLAX",
-        "terminal": "2",
-        "gate": "26",
-        "delay": null,
-        "scheduled": "2026-07-31T11:45:00+00:00",
-        "estimated": "2026-07-31T11:45:00+00:00",
-        "actual": null,
-        "estimated_runway": null,
-        "actual_runway": null
-      },
-      "arrival": {
         "airport": "Shanghai Pudong International",
         "timezone": "Asia/Shanghai",
         "iata": "PVG",
         "icao": "ZSPD",
         "terminal": "1",
-        "gate": "18",
-        "baggage": null,
-        "scheduled": "2026-08-01T16:05:00+00:00",
-        "delay": 16,
+        "gate": "21",
+        "delay": null,
+        "scheduled": "2026-07-31T17:30:00+00:00",
+        "estimated": "2026-07-31T17:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Seattle-Tacoma International",
+        "timezone": "America/Los_Angeles",
+        "iata": "SEA",
+        "icao": "KSEA",
+        "terminal": null,
+        "gate": "S12",
+        "baggage": "INTL",
+        "scheduled": "2026-07-31T13:58:00+00:00",
+        "delay": 71,
         "estimated": null,
         "actual": null,
         "estimated_runway": null,
@@ -43,20 +43,74 @@
         "icao": "DAL"
       },
       "flight": {
-        "number": "39",
-        "iata": "DL39",
-        "icao": "DAL39",
+        "number": "280",
+        "iata": "DL280",
+        "icao": "DAL280",
         "codeshared": null
       },
       "aircraft": {
         "registration": null,
         "iata": null,
         "icao": null,
-        "icao24": "A641B6"
+        "icao24": "A66935"
       },
       "live": null,
-      "_fetch_timestamp_utc": "2026-07-31T13:42:43.639149+00:00",
-      "_fetch_flight_iata_queried": "DL39",
+      "_fetch_timestamp_utc": "2026-07-31T13:43:10.670064+00:00",
+      "_fetch_flight_iata_queried": "DL280",
+      "_fetch_mode": "manual"
+    },
+    {
+      "flight_date": "2026-07-30",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Shanghai Pudong International",
+        "timezone": "Asia/Shanghai",
+        "iata": "PVG",
+        "icao": "ZSPD",
+        "terminal": "1",
+        "gate": "19",
+        "delay": 65,
+        "scheduled": "2026-07-30T17:30:00+00:00",
+        "estimated": "2026-07-30T17:30:00+00:00",
+        "actual": "2026-07-30T19:28:00+00:00",
+        "estimated_runway": "2026-07-30T19:28:00+00:00",
+        "actual_runway": "2026-07-30T19:28:00+00:00"
+      },
+      "arrival": {
+        "airport": "Seattle-Tacoma International",
+        "timezone": "America/Los_Angeles",
+        "iata": "SEA",
+        "icao": "KSEA",
+        "terminal": null,
+        "gate": "S12",
+        "baggage": "22",
+        "scheduled": "2026-07-30T13:58:00+00:00",
+        "delay": 64,
+        "estimated": "2026-07-30T15:02:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Delta Air Lines",
+        "iata": "DL",
+        "icao": "DAL"
+      },
+      "flight": {
+        "number": "280",
+        "iata": "DL280",
+        "icao": "DAL280",
+        "codeshared": null
+      },
+      "aircraft": {
+        "registration": null,
+        "iata": null,
+        "icao": null,
+        "icao24": "A65800"
+      },
+      "live": null,
+      "_fetch_timestamp_utc": "2026-07-31T13:43:10.670064+00:00",
+      "_fetch_flight_iata_queried": "DL280",
       "_fetch_mode": "manual"
     }
   ]
