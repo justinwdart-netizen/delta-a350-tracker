@@ -6,12 +6,15 @@ results to data/flights_history.jsonl (one JSON record per line, never
 overwritten, so history accumulates over time) and overwrites
 data/latest.json with just this run's results for convenience.
 
+PRIORITY FLIGHTS: DL120 and DL275 are the user's most-flown routes and are
+checked on EVERY automatic run, guaranteed. Only the remaining slot(s) rotate
+through the rest of the known roster, so priority coverage is near-daily
+while the rest of the fleet is still sampled over time, just more slowly.
+
 QUOTA MATH: free Aviationstack tier = 100 requests/month. If this runs daily
 (30 runs/month), keep FLIGHT_NUMBERS_PER_RUN small enough that
 FLIGHT_NUMBERS_PER_RUN * 30 stays under 100 — 3 per run (90/month) is a safe
-default. Adjust ROTATION below to control which flights get checked and how
-often; it cycles through the full known roster a few at a time so the whole
-fleet gets sampled over time instead of ignoring most of it forever.
+default: 2 priority + 1 rotating slot per run.
 """
 
 import json
@@ -35,6 +38,15 @@ FULL_ROSTER = [
 ]
 
 FLIGHT_NUMBERS_PER_RUN = 3  # keep small — see quota math in the docstring above
+
+# PRIORITY FLIGHTS: always checked on every automatic (non-manual) run, since
+# these are the ones the user actually flies and cares about most. Only the
+# remaining slots rotate through the rest of the roster below.
+PRIORITY_FLIGHTS = ["DL120", "DL275"]
+
+# Rotation pool excludes the priority flights so they aren't queried twice in
+# the same run (they're already guaranteed a slot above).
+ROTATION_POOL = [f for f in FULL_ROSTER if f not in PRIORITY_FLIGHTS]
 
 DATA_DIR = "data"
 HISTORY_PATH = os.path.join(DATA_DIR, "flights_history.jsonl")
@@ -76,9 +88,12 @@ def main():
         batch = [manual_flight]
         mode = "manual"
     else:
+        remaining_slots = FLIGHT_NUMBERS_PER_RUN - len(PRIORITY_FLIGHTS)
         start = load_rotation_index()
-        batch = [FULL_ROSTER[(start + i) % len(FULL_ROSTER)] for i in range(FLIGHT_NUMBERS_PER_RUN)]
-        save_rotation_index((start + FLIGHT_NUMBERS_PER_RUN) % len(FULL_ROSTER))
+        rotating_batch = [ROTATION_POOL[(start + i) % len(ROTATION_POOL)] for i in range(max(remaining_slots, 0))]
+        if remaining_slots > 0:
+            save_rotation_index((start + remaining_slots) % len(ROTATION_POOL))
+        batch = PRIORITY_FLIGHTS + rotating_batch
         mode = "rotation"
 
     fetch_ts = datetime.now(timezone.utc).isoformat()
