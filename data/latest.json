@@ -1,23 +1,133 @@
 {
-  "fetch_timestamp_utc": "2026-07-31T14:04:29.131326+00:00",
-  "fetch_mode": "manual",
+  "fetch_timestamp_utc": "2026-07-31T18:11:19.496551+00:00",
+  "fetch_mode": "rotation",
   "flight_numbers_queried": [
-    "DL295"
+    "DL120",
+    "DL275",
+    "DL38"
   ],
   "records": [
     {
       "flight_date": "2026-07-31",
       "flight_status": "scheduled",
       "departure": {
-        "airport": "Hartsfield-jackson Atlanta International",
-        "timezone": "America/New_York",
-        "iata": "ATL",
-        "icao": "KATL",
-        "terminal": "I",
-        "gate": "F7",
+        "airport": "Haneda Airport",
+        "timezone": "Asia/Tokyo",
+        "iata": "HND",
+        "icao": "RJTT",
+        "terminal": "3",
+        "gate": "144",
+        "delay": 31,
+        "scheduled": "2026-07-31T16:05:00+00:00",
+        "estimated": "2026-07-31T16:05:00+00:00",
+        "actual": "2026-07-31T16:53:00+00:00",
+        "estimated_runway": "2026-07-31T16:53:00+00:00",
+        "actual_runway": "2026-07-31T16:53:00+00:00"
+      },
+      "arrival": {
+        "airport": "Minneapolis - St. Paul International",
+        "timezone": "America/Chicago",
+        "iata": "MSP",
+        "icao": "KMSP",
+        "terminal": "1",
+        "gate": "G4",
+        "baggage": "IN1",
+        "scheduled": "2026-07-31T13:35:00+00:00",
+        "delay": 30,
+        "estimated": "2026-07-31T14:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Delta Air Lines",
+        "iata": "DL",
+        "icao": "DAL"
+      },
+      "flight": {
+        "number": "120",
+        "iata": "DL120",
+        "icao": "DAL120",
+        "codeshared": null
+      },
+      "aircraft": {
+        "registration": null,
+        "iata": null,
+        "icao": null,
+        "icao24": "A67F8A"
+      },
+      "live": null,
+      "_fetch_timestamp_utc": "2026-07-31T18:11:19.496551+00:00",
+      "_fetch_flight_iata_queried": "DL120",
+      "_fetch_mode": "rotation"
+    },
+    {
+      "flight_date": "2026-07-30",
+      "flight_status": "landed",
+      "departure": {
+        "airport": "Haneda Airport",
+        "timezone": "Asia/Tokyo",
+        "iata": "HND",
+        "icao": "RJTT",
+        "terminal": "3",
+        "gate": "142",
+        "delay": 10,
+        "scheduled": "2026-07-30T16:05:00+00:00",
+        "estimated": "2026-07-30T16:05:00+00:00",
+        "actual": "2026-07-30T16:52:00+00:00",
+        "estimated_runway": "2026-07-30T16:52:00+00:00",
+        "actual_runway": "2026-07-30T16:52:00+00:00"
+      },
+      "arrival": {
+        "airport": "Minneapolis - St. Paul International",
+        "timezone": "America/Chicago",
+        "iata": "MSP",
+        "icao": "KMSP",
+        "terminal": "1",
+        "gate": "G9",
+        "baggage": "IN2",
+        "scheduled": "2026-07-30T13:35:00+00:00",
+        "delay": 10,
+        "estimated": "2026-07-30T13:41:00+00:00",
+        "actual": "2026-07-30T13:45:00+00:00",
+        "estimated_runway": "2026-07-30T13:45:00+00:00",
+        "actual_runway": "2026-07-30T13:45:00+00:00"
+      },
+      "airline": {
+        "name": "Delta Air Lines",
+        "iata": "DL",
+        "icao": "DAL"
+      },
+      "flight": {
+        "number": "120",
+        "iata": "DL120",
+        "icao": "DAL120",
+        "codeshared": null
+      },
+      "aircraft": {
+        "registration": null,
+        "iata": null,
+        "icao": null,
+        "icao24": "A66CF7"
+      },
+      "live": null,
+      "_fetch_timestamp_utc": "2026-07-31T18:11:19.496551+00:00",
+      "_fetch_flight_iata_queried": "DL120",
+      "_fetch_mode": "rotation"
+    },
+    {
+      "flight_date": "2026-07-31",
+      "flight_status": "active",
+      "departure": {
+        "airport": "Detroit Metropolitan Wayne County",
+        "timezone": "America/Detroit",
+        "iata": "DTW",
+        "icao": "KDTW",
+        "terminal": "M",
+        "gate": "A36",
         "delay": null,
-        "scheduled": "2026-07-31T11:15:00+00:00",
-        "estimated": "2026-07-31T11:15:00+00:00",
+        "scheduled": "2026-07-31T14:05:00+00:00",
+        "estimated": "2026-07-31T14:05:00+00:00",
         "actual": null,
         "estimated_runway": null,
         "actual_runway": null
@@ -28,10 +138,10 @@
         "iata": "HND",
         "icao": "RJTT",
         "terminal": "3",
-        "gate": "144",
+        "gate": "142",
         "baggage": null,
-        "scheduled": "2026-08-01T14:15:00+00:00",
-        "delay": null,
+        "scheduled": "2026-08-01T16:15:00+00:00",
+        "delay": 16,
         "estimated": null,
         "actual": null,
         "estimated_runway": null,
@@ -43,38 +153,38 @@
         "icao": "DAL"
       },
       "flight": {
-        "number": "295",
-        "iata": "DL295",
-        "icao": "DAL295",
+        "number": "275",
+        "iata": "DL275",
+        "icao": "DAL275",
         "codeshared": null
       },
       "aircraft": {
         "registration": null,
         "iata": null,
         "icao": null,
-        "icao24": "A75DA8"
+        "icao24": "A65092"
       },
       "live": null,
-      "_fetch_timestamp_utc": "2026-07-31T14:04:29.131326+00:00",
-      "_fetch_flight_iata_queried": "DL295",
-      "_fetch_mode": "manual"
+      "_fetch_timestamp_utc": "2026-07-31T18:11:19.496551+00:00",
+      "_fetch_flight_iata_queried": "DL275",
+      "_fetch_mode": "rotation"
     },
     {
       "flight_date": "2026-07-30",
       "flight_status": "landed",
       "departure": {
-        "airport": "Hartsfield-jackson Atlanta International",
-        "timezone": "America/New_York",
-        "iata": "ATL",
-        "icao": "KATL",
-        "terminal": "I",
-        "gate": "F7",
-        "delay": null,
-        "scheduled": "2026-07-30T11:15:00+00:00",
-        "estimated": "2026-07-30T11:15:00+00:00",
-        "actual": "2026-07-30T11:17:00+00:00",
-        "estimated_runway": "2026-07-30T11:17:00+00:00",
-        "actual_runway": "2026-07-30T11:17:00+00:00"
+        "airport": "Detroit Metropolitan Wayne County",
+        "timezone": "America/Detroit",
+        "iata": "DTW",
+        "icao": "KDTW",
+        "terminal": "M",
+        "gate": "A30",
+        "delay": 50,
+        "scheduled": "2026-07-30T14:05:00+00:00",
+        "estimated": "2026-07-30T14:05:00+00:00",
+        "actual": "2026-07-30T14:31:00+00:00",
+        "estimated_runway": "2026-07-30T14:31:00+00:00",
+        "actual_runway": "2026-07-30T14:31:00+00:00"
       },
       "arrival": {
         "airport": "Haneda Airport",
@@ -82,14 +192,14 @@
         "iata": "HND",
         "icao": "RJTT",
         "terminal": "3",
-        "gate": "144",
+        "gate": "142",
         "baggage": null,
-        "scheduled": "2026-07-31T14:15:00+00:00",
-        "delay": null,
-        "estimated": "2026-07-31T14:07:00+00:00",
-        "actual": "2026-07-31T14:11:00+00:00",
-        "estimated_runway": "2026-07-31T14:11:00+00:00",
-        "actual_runway": "2026-07-31T14:11:00+00:00"
+        "scheduled": "2026-07-31T16:15:00+00:00",
+        "delay": 50,
+        "estimated": "2026-07-31T16:56:00+00:00",
+        "actual": "2026-07-31T17:05:00+00:00",
+        "estimated_runway": "2026-07-31T17:05:00+00:00",
+        "actual_runway": "2026-07-31T17:05:00+00:00"
       },
       "airline": {
         "name": "Delta Air Lines",
@@ -97,21 +207,75 @@
         "icao": "DAL"
       },
       "flight": {
-        "number": "295",
-        "iata": "DL295",
-        "icao": "DAL295",
+        "number": "275",
+        "iata": "DL275",
+        "icao": "DAL275",
         "codeshared": null
       },
       "aircraft": {
         "registration": null,
         "iata": null,
         "icao": null,
-        "icao24": "A67F8A"
+        "icao24": "A65BB7"
       },
       "live": null,
-      "_fetch_timestamp_utc": "2026-07-31T14:04:29.131326+00:00",
-      "_fetch_flight_iata_queried": "DL295",
-      "_fetch_mode": "manual"
+      "_fetch_timestamp_utc": "2026-07-31T18:11:19.496551+00:00",
+      "_fetch_flight_iata_queried": "DL275",
+      "_fetch_mode": "rotation"
+    },
+    {
+      "flight_date": "2026-07-30",
+      "flight_status": "landed",
+      "departure": {
+        "airport": "Shanghai Pudong International",
+        "timezone": "Asia/Shanghai",
+        "iata": "PVG",
+        "icao": "ZSPD",
+        "terminal": "1",
+        "gate": "18",
+        "delay": null,
+        "scheduled": "2026-07-30T18:25:00+00:00",
+        "estimated": "2026-07-30T18:25:00+00:00",
+        "actual": "2026-07-30T18:40:00+00:00",
+        "estimated_runway": "2026-07-30T18:40:00+00:00",
+        "actual_runway": "2026-07-30T18:40:00+00:00"
+      },
+      "arrival": {
+        "airport": "Los Angeles International",
+        "timezone": "America/Los_Angeles",
+        "iata": "LAX",
+        "icao": "KLAX",
+        "terminal": "B",
+        "gate": "133",
+        "baggage": "4",
+        "scheduled": "2026-07-30T15:49:00+00:00",
+        "delay": null,
+        "estimated": "2026-07-30T15:07:00+00:00",
+        "actual": "2026-07-30T15:05:00+00:00",
+        "estimated_runway": "2026-07-30T15:05:00+00:00",
+        "actual_runway": "2026-07-30T15:05:00+00:00"
+      },
+      "airline": {
+        "name": "Delta Air Lines",
+        "iata": "DL",
+        "icao": "DAL"
+      },
+      "flight": {
+        "number": "38",
+        "iata": "DL38",
+        "icao": "DAL38",
+        "codeshared": null
+      },
+      "aircraft": {
+        "registration": null,
+        "iata": null,
+        "icao": null,
+        "icao24": "A67BD3"
+      },
+      "live": null,
+      "_fetch_timestamp_utc": "2026-07-31T18:11:19.496551+00:00",
+      "_fetch_flight_iata_queried": "DL38",
+      "_fetch_mode": "rotation"
     }
   ]
 }
