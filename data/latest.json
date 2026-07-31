@@ -1,26 +1,26 @@
 {
-  "fetch_timestamp_utc": "2026-07-31T13:27:44.380085+00:00",
+  "fetch_timestamp_utc": "2026-07-31T13:29:07.338892+00:00",
   "fetch_mode": "manual",
   "flight_numbers_queried": [
-    "DL291"
+    "DL88"
   ],
   "records": [
     {
       "flight_date": "2026-07-31",
       "flight_status": "active",
       "departure": {
-        "airport": "Charles De Gaulle",
-        "timezone": "Europe/Paris",
-        "iata": "CDG",
-        "icao": "LFPG",
-        "terminal": "2E",
-        "gate": "M50",
-        "delay": null,
-        "scheduled": "2026-07-31T16:00:00+00:00",
-        "estimated": "2026-07-31T16:00:00+00:00",
-        "actual": null,
-        "estimated_runway": null,
-        "actual_runway": null
+        "airport": "Hong Kong International",
+        "timezone": "Asia/Hong_Kong",
+        "iata": "HKG",
+        "icao": "VHHH",
+        "terminal": "1",
+        "gate": "34",
+        "delay": 6,
+        "scheduled": "2026-07-31T09:25:00+00:00",
+        "estimated": "2026-07-31T09:25:00+00:00",
+        "actual": "2026-07-31T10:06:00+00:00",
+        "estimated_runway": "2026-07-31T10:06:00+00:00",
+        "actual_runway": "2026-07-31T10:06:00+00:00"
       },
       "arrival": {
         "airport": "Los Angeles International",
@@ -28,11 +28,11 @@
         "iata": "LAX",
         "icao": "KLAX",
         "terminal": "B",
-        "gate": "133",
+        "gate": "131",
         "baggage": null,
-        "scheduled": "2026-07-31T18:35:00+00:00",
-        "delay": 26,
-        "estimated": null,
+        "scheduled": "2026-07-31T08:00:00+00:00",
+        "delay": null,
+        "estimated": "2026-07-31T08:00:00+00:00",
         "actual": null,
         "estimated_runway": null,
         "actual_runway": null
@@ -43,38 +43,38 @@
         "icao": "DAL"
       },
       "flight": {
-        "number": "291",
-        "iata": "DL291",
-        "icao": "DAL291",
+        "number": "88",
+        "iata": "DL88",
+        "icao": "DAL88",
         "codeshared": null
       },
       "aircraft": {
         "registration": null,
         "iata": null,
         "icao": null,
-        "icao24": "A67BD3"
+        "icao24": "A6A347"
       },
       "live": null,
-      "_fetch_timestamp_utc": "2026-07-31T13:27:44.380085+00:00",
-      "_fetch_flight_iata_queried": "DL291",
+      "_fetch_timestamp_utc": "2026-07-31T13:29:07.338892+00:00",
+      "_fetch_flight_iata_queried": "DL88",
       "_fetch_mode": "manual"
     },
     {
       "flight_date": "2026-07-30",
-      "flight_status": "landed",
+      "flight_status": "scheduled",
       "departure": {
-        "airport": "Charles De Gaulle",
-        "timezone": "Europe/Paris",
-        "iata": "CDG",
-        "icao": "LFPG",
-        "terminal": "2E",
-        "gate": "M26",
-        "delay": 12,
-        "scheduled": "2026-07-30T16:00:00+00:00",
-        "estimated": "2026-07-30T16:00:00+00:00",
-        "actual": "2026-07-30T16:37:00+00:00",
-        "estimated_runway": "2026-07-30T16:37:00+00:00",
-        "actual_runway": "2026-07-30T16:37:00+00:00"
+        "airport": "Hong Kong International",
+        "timezone": "Asia/Hong_Kong",
+        "iata": "HKG",
+        "icao": "VHHH",
+        "terminal": "1",
+        "gate": "33",
+        "delay": 78,
+        "scheduled": "2026-07-30T09:25:00+00:00",
+        "estimated": "2026-07-30T09:25:00+00:00",
+        "actual": "2026-07-30T11:32:00+00:00",
+        "estimated_runway": "2026-07-30T11:32:00+00:00",
+        "actual_runway": "2026-07-30T11:32:00+00:00"
       },
       "arrival": {
         "airport": "Los Angeles International",
@@ -84,12 +84,12 @@
         "terminal": "B",
         "gate": "133",
         "baggage": null,
-        "scheduled": "2026-07-30T18:35:00+00:00",
-        "delay": 12,
-        "estimated": "2026-07-30T18:47:00+00:00",
-        "actual": "2026-07-30T18:47:00+00:00",
-        "estimated_runway": "2026-07-30T18:47:00+00:00",
-        "actual_runway": "2026-07-30T18:47:00+00:00"
+        "scheduled": "2026-07-30T08:00:00+00:00",
+        "delay": 77,
+        "estimated": "2026-07-30T09:17:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
       },
       "airline": {
         "name": "Delta Air Lines",
@@ -97,20 +97,20 @@
         "icao": "DAL"
       },
       "flight": {
-        "number": "291",
-        "iata": "DL291",
-        "icao": "DAL291",
+        "number": "88",
+        "iata": "DL88",
+        "icao": "DAL88",
         "codeshared": null
       },
       "aircraft": {
         "registration": null,
         "iata": null,
         "icao": null,
-        "icao24": "A759F1"
+        "icao24": "A68946"
       },
       "live": null,
-      "_fetch_timestamp_utc": "2026-07-31T13:27:44.380085+00:00",
-      "_fetch_flight_iata_queried": "DL291",
+      "_fetch_timestamp_utc": "2026-07-31T13:29:07.338892+00:00",
+      "_fetch_flight_iata_queried": "DL88",
       "_fetch_mode": "manual"
     }
   ]
