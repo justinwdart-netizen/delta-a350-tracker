@@ -1,0 +1,169 @@
+{
+  "fetch_timestamp_utc": "2026-07-31T08:58:04.345385+00:00",
+  "flight_numbers_queried": [
+    "DL7",
+    "DL8",
+    "DL11"
+  ],
+  "records": [
+    {
+      "flight_date": "2026-07-30",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Los Angeles International",
+        "timezone": "America/Los_Angeles",
+        "iata": "LAX",
+        "icao": "KLAX",
+        "terminal": "B",
+        "gate": "133",
+        "delay": 64,
+        "scheduled": "2026-07-30T10:40:00+00:00",
+        "estimated": "2026-07-30T10:40:00+00:00",
+        "actual": "2026-07-30T11:56:00+00:00",
+        "estimated_runway": "2026-07-30T11:56:00+00:00",
+        "actual_runway": "2026-07-30T11:56:00+00:00"
+      },
+      "arrival": {
+        "airport": "Haneda Airport",
+        "timezone": "Asia/Tokyo",
+        "iata": "HND",
+        "icao": "RJTT",
+        "terminal": "3",
+        "gate": "143",
+        "baggage": null,
+        "scheduled": "2026-07-31T14:00:00+00:00",
+        "delay": 63,
+        "estimated": "2026-07-31T15:03:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Delta Air Lines",
+        "iata": "DL",
+        "icao": "DAL"
+      },
+      "flight": {
+        "number": "7",
+        "iata": "DL7",
+        "icao": "DAL7",
+        "codeshared": null
+      },
+      "aircraft": {
+        "registration": null,
+        "iata": null,
+        "icao": null,
+        "icao24": "A68946"
+      },
+      "live": null,
+      "_fetch_timestamp_utc": "2026-07-31T08:58:04.345385+00:00",
+      "_fetch_flight_iata_queried": "DL7"
+    },
+    {
+      "flight_date": "2026-07-31",
+      "flight_status": "active",
+      "departure": {
+        "airport": "Haneda Airport",
+        "timezone": "Asia/Tokyo",
+        "iata": "HND",
+        "icao": "RJTT",
+        "terminal": "3",
+        "gate": "142",
+        "delay": null,
+        "scheduled": "2026-07-31T16:35:00+00:00",
+        "estimated": "2026-07-31T16:35:00+00:00",
+        "actual": "2026-07-31T17:08:00+00:00",
+        "estimated_runway": "2026-07-31T17:08:00+00:00",
+        "actual_runway": "2026-07-31T17:08:00+00:00"
+      },
+      "arrival": {
+        "airport": "Los Angeles International",
+        "timezone": "America/Los_Angeles",
+        "iata": "LAX",
+        "icao": "KLAX",
+        "terminal": "B",
+        "gate": "131",
+        "baggage": null,
+        "scheduled": "2026-07-31T11:05:00+00:00",
+        "delay": 33,
+        "estimated": "2026-07-31T11:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Delta Air Lines",
+        "iata": "DL",
+        "icao": "DAL"
+      },
+      "flight": {
+        "number": "8",
+        "iata": "DL8",
+        "icao": "DAL8",
+        "codeshared": null
+      },
+      "aircraft": {
+        "registration": null,
+        "iata": null,
+        "icao": null,
+        "icao24": "A7615F"
+      },
+      "live": null,
+      "_fetch_timestamp_utc": "2026-07-31T08:58:04.345385+00:00",
+      "_fetch_flight_iata_queried": "DL8"
+    },
+    {
+      "flight_date": "2026-07-30",
+      "flight_status": "landed",
+      "departure": {
+        "airport": "Haneda Airport",
+        "timezone": "Asia/Tokyo",
+        "iata": "HND",
+        "icao": "RJTT",
+        "terminal": "3",
+        "gate": "143",
+        "delay": 13,
+        "scheduled": "2026-07-30T16:35:00+00:00",
+        "estimated": "2026-07-30T16:35:00+00:00",
+        "actual": "2026-07-30T17:19:00+00:00",
+        "estimated_runway": "2026-07-30T17:19:00+00:00",
+        "actual_runway": "2026-07-30T17:19:00+00:00"
+      },
+      "arrival": {
+        "airport": "Los Angeles International",
+        "timezone": "America/Los_Angeles",
+        "iata": "LAX",
+        "icao": "KLAX",
+        "terminal": "B",
+        "gate": "131",
+        "baggage": null,
+        "scheduled": "2026-07-30T11:05:00+00:00",
+        "delay": null,
+        "estimated": "2026-07-30T10:51:00+00:00",
+        "actual": "2026-07-30T10:50:00+00:00",
+        "estimated_runway": "2026-07-30T10:50:00+00:00",
+        "actual_runway": "2026-07-30T10:50:00+00:00"
+      },
+      "airline": {
+        "name": "Delta Air Lines",
+        "iata": "DL",
+        "icao": "DAL"
+      },
+      "flight": {
+        "number": "8",
+        "iata": "DL8",
+        "icao": "DAL8",
+        "codeshared": null
+      },
+      "aircraft": {
+        "registration": null,
+        "iata": null,
+        "icao": null,
+        "icao24": "A748BC"
+      },
+      "live": null,
+      "_fetch_timestamp_utc": "2026-07-31T08:58:04.345385+00:00",
+      "_fetch_flight_iata_queried": "DL8"
+    }
+  ]
+}
