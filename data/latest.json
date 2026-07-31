@@ -1,41 +1,41 @@
 {
-  "fetch_timestamp_utc": "2026-07-31T13:53:49.580667+00:00",
+  "fetch_timestamp_utc": "2026-07-31T13:54:13.676969+00:00",
   "fetch_mode": "manual",
   "flight_numbers_queried": [
-    "DL12"
+    "DL40"
   ],
   "records": [
     {
       "flight_date": "2026-07-31",
-      "flight_status": "active",
+      "flight_status": "landed",
       "departure": {
-        "airport": "Melbourne - Tullamarine Airport",
-        "timezone": "Australia/Melbourne",
-        "iata": "MEL",
-        "icao": "YMML",
-        "terminal": "2",
-        "gate": "18",
-        "delay": 1,
-        "scheduled": "2026-07-31T10:00:00+00:00",
-        "estimated": "2026-07-31T10:00:00+00:00",
-        "actual": "2026-07-31T10:16:00+00:00",
-        "estimated_runway": "2026-07-31T10:16:00+00:00",
-        "actual_runway": "2026-07-31T10:16:00+00:00"
+        "airport": "Sydney Kingsford Smith Airport",
+        "timezone": "Australia/Sydney",
+        "iata": "SYD",
+        "icao": "YSSY",
+        "terminal": "1",
+        "gate": "58",
+        "delay": null,
+        "scheduled": "2026-07-31T09:15:00+00:00",
+        "estimated": "2026-07-31T09:15:00+00:00",
+        "actual": "2026-07-31T09:25:00+00:00",
+        "estimated_runway": "2026-07-31T09:25:00+00:00",
+        "actual_runway": "2026-07-31T09:25:00+00:00"
       },
       "arrival": {
         "airport": "Los Angeles International",
         "timezone": "America/Los_Angeles",
         "iata": "LAX",
         "icao": "KLAX",
-        "terminal": "B",
-        "gate": "133",
+        "terminal": "3",
+        "gate": "221",
         "baggage": null,
-        "scheduled": "2026-07-31T07:40:00+00:00",
+        "scheduled": "2026-07-31T06:05:00+00:00",
         "delay": null,
-        "estimated": "2026-07-31T07:04:00+00:00",
-        "actual": null,
-        "estimated_runway": null,
-        "actual_runway": null
+        "estimated": "2026-07-31T05:23:00+00:00",
+        "actual": "2026-07-31T05:25:00+00:00",
+        "estimated_runway": "2026-07-31T05:25:00+00:00",
+        "actual_runway": "2026-07-31T05:25:00+00:00"
       },
       "airline": {
         "name": "Delta Air Lines",
@@ -43,20 +43,74 @@
         "icao": "DAL"
       },
       "flight": {
-        "number": "12",
-        "iata": "DL12",
-        "icao": "DAL12",
+        "number": "40",
+        "iata": "DL40",
+        "icao": "DAL40",
         "codeshared": null
       },
       "aircraft": {
         "registration": null,
         "iata": null,
         "icao": null,
-        "icao24": "A6A6FE"
+        "icao24": "A641B6"
       },
       "live": null,
-      "_fetch_timestamp_utc": "2026-07-31T13:53:49.580667+00:00",
-      "_fetch_flight_iata_queried": "DL12",
+      "_fetch_timestamp_utc": "2026-07-31T13:54:13.676969+00:00",
+      "_fetch_flight_iata_queried": "DL40",
+      "_fetch_mode": "manual"
+    },
+    {
+      "flight_date": "2026-07-30",
+      "flight_status": "landed",
+      "departure": {
+        "airport": "Sydney Kingsford Smith Airport",
+        "timezone": "Australia/Sydney",
+        "iata": "SYD",
+        "icao": "YSSY",
+        "terminal": "1",
+        "gate": "58",
+        "delay": null,
+        "scheduled": "2026-07-30T09:15:00+00:00",
+        "estimated": "2026-07-30T09:15:00+00:00",
+        "actual": "2026-07-30T09:23:00+00:00",
+        "estimated_runway": "2026-07-30T09:23:00+00:00",
+        "actual_runway": "2026-07-30T09:23:00+00:00"
+      },
+      "arrival": {
+        "airport": "Los Angeles International",
+        "timezone": "America/Los_Angeles",
+        "iata": "LAX",
+        "icao": "KLAX",
+        "terminal": "B",
+        "gate": "131",
+        "baggage": null,
+        "scheduled": "2026-07-30T06:05:00+00:00",
+        "delay": null,
+        "estimated": "2026-07-30T05:36:00+00:00",
+        "actual": "2026-07-30T05:37:00+00:00",
+        "estimated_runway": "2026-07-30T05:37:00+00:00",
+        "actual_runway": "2026-07-30T05:37:00+00:00"
+      },
+      "airline": {
+        "name": "Delta Air Lines",
+        "iata": "DL",
+        "icao": "DAL"
+      },
+      "flight": {
+        "number": "40",
+        "iata": "DL40",
+        "icao": "DAL40",
+        "codeshared": null
+      },
+      "aircraft": {
+        "registration": null,
+        "iata": null,
+        "icao": null,
+        "icao24": "A68336"
+      },
+      "live": null,
+      "_fetch_timestamp_utc": "2026-07-31T13:54:13.676969+00:00",
+      "_fetch_flight_iata_queried": "DL40",
       "_fetch_mode": "manual"
     }
   ]
