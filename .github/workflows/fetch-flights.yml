@@ -7,7 +7,12 @@ on:
     # Default: once daily at 13:00 UTC (~22:00 JST / ~09:00 US Eastern).
     # Adjust to your preference. Cron is UTC regardless of your local time.
     - cron: '0 13 * * *'
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      flight_number:
+        description: 'Specific flight number to check (e.g. DL172). Leave blank to run the normal rotation instead.'
+        required: false
+        type: string
 
 jobs:
   fetch-flights:
@@ -24,6 +29,7 @@ jobs:
       - name: Fetch flight data
         env:
           AVIATIONSTACK_API_KEY: ${{ secrets.AVIATIONSTACK_API_KEY }}
+          MANUAL_FLIGHT_NUMBER: ${{ github.event.inputs.flight_number }}
         run: python fetch_flights.py
 
       - name: Commit results
