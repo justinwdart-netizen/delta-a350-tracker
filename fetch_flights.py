@@ -15,10 +15,20 @@ QUOTA MATH: free Aviationstack tier = 100 requests/month. If this runs daily
 (30 runs/month), keep FLIGHT_NUMBERS_PER_RUN small enough that
 FLIGHT_NUMBERS_PER_RUN * 30 stays under 100 — 3 per run (90/month) is a safe
 default: 2 priority + 1 rotating slot per run.
+
+MANUAL_FLIGHT_NUMBER modes (set via the workflow_dispatch input):
+  - blank              -> normal rotation (2 priority + 1 rotating), the daily default
+  - a single number     -> e.g. "DL8", queries just that one flight
+  - "ALL"                -> queries every flight number in FULL_ROSTER (56 requests
+                            in one run). Costs over half the FREE-TIER MONTHLY QUOTA
+                            in a single run — use deliberately, not routinely. Does
+                            not touch rotation_state.json, so it never disturbs the
+                            next scheduled rotation run.
 """
 
 import json
 import os
+import time
 import urllib.request
 import urllib.parse
 from datetime import datetime, timezone
@@ -81,7 +91,18 @@ def main():
 
     manual_flight = os.environ.get("MANUAL_FLIGHT_NUMBER", "").strip().upper()
 
-    if manual_flight:
+    if manual_flight == "ALL":
+        # Full-fleet sweep: every known flight number, one run. Deliberately
+        # NOT the default — costs 56 requests, over half the free-tier
+        # monthly quota, in a single run. Rotation state is left untouched
+        # so the next scheduled/rotation run picks up exactly where it would
+        # have anyway.
+        batch = FULL_ROSTER
+        mode = "manual_all"
+        print(f"ALL mode: querying the full {len(batch)}-flight roster "
+              f"({len(batch)} Aviationstack requests this run). This is a "
+              f"quota-heavy, deliberate action, not the routine default.")
+    elif manual_flight:
         # Manual on-demand lookup: query exactly this one flight, don't touch
         # the rotation state at all (so it doesn't skip/duplicate the next
         # scheduled batch).
@@ -114,6 +135,9 @@ def main():
             latest_results.append(rec)
             with open(HISTORY_PATH, "a") as f:
                 f.write(json.dumps(rec) + "\n")
+
+        if mode == "manual_all":
+            time.sleep(0.3)  # light pacing across a 56-request sweep, not needed for small batches
 
     with open(LATEST_PATH, "w") as f:
         json.dump({
