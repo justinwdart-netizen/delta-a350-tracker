@@ -1,0 +1,5 @@
+{"predicted_on": "2026-08-01", "target_date": "2026-08-01", "predicted_tail": "N574DZ", "confidence": 0.85, "method": "schedule_confirmed", "days_ahead": 1, "actual_tail": null, "correct": null}
+{"predicted_on": "2026-08-01", "target_date": "2026-08-02", "predicted_tail": "N518DZ", "confidence": 0.0673076923076923, "method": "frequency", "days_ahead": 2, "actual_tail": null, "correct": null}
+{"predicted_on": "2026-08-01", "target_date": "2026-08-03", "predicted_tail": "N574DZ", "confidence": 0.04487179487179487, "method": "frequency", "days_ahead": 3, "actual_tail": null, "correct": null}
+{"predicted_on": "2026-08-01", "target_date": "2026-08-04", "predicted_tail": "N518DZ", "confidence": 0.03365384615384615, "method": "frequency", "days_ahead": 4, "actual_tail": null, "correct": null}
+{"predicted_on": "2026-08-01", "target_date": "2026-08-05", "predicted_tail": "N574DZ", "confidence": 0.02692307692307692, "method": "frequency", "days_ahead": 5, "actual_tail": null, "correct": null}
