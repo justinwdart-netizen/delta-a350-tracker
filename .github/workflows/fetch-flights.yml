@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       flight_number:
-        description: 'Specific flight number to check (e.g. DL172). Leave blank to run the normal rotation instead.'
+        description: 'Specific flight number (e.g. DL172), "ALL" for a full 56-flight sweep (uses ~56 of your 100 monthly API requests — use deliberately), or leave blank for the normal 3-flight rotation.'
         required: false
         type: string
 
