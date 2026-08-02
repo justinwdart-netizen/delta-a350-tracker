@@ -1,31 +1,38 @@
 """
 fetch_flights.py — runs inside the GitHub Action on a schedule.
 
-Queries the FULL known Delta A350 flight-number roster on every run and
-appends results to data/flights_history.jsonl (one JSON record per line,
-never overwritten, so history accumulates over time), and overwrites
-data/latest.json with just this run's results for convenience.
+UPDATED for Aviationstack Basic tier (10,000 requests/month), upgraded from
+Free (100/month) on 1 Aug 2026.
 
-QUOTA MATH (updated for the $49.99/mo "Basic" Aviationstack plan —
-10,000 requests/month, confirmed via account dashboard):
-  56 known flight numbers x 1 run/day x 30 days  = 1,680 requests/month (17% of quota)
-  56 known flight numbers x 2 runs/day x 30 days = 3,360 requests/month (34% of quota)
-Even running the workflow manually several extra times a day leaves a wide
-safety margin. This replaces the old free-tier throttled rotation (3/run,
-2 priority + 1 rotating), which under-covered the roster badly: most flight
-numbers only got re-checked once every ~54 days, so a leg seen as
-"scheduled" would often never get re-queried to see whether it had actually
-departed. Querying everything every run fixes that directly.
+WHAT CHANGED FROM THE FREE-TIER VERSION:
+- No more rotation/sampling. The old version could only afford 3 flight
+  numbers per run (2 "priority" + 1 rotating through the rest of the
+  roster), which meant most of the fleet's flight numbers only got checked
+  once every few weeks by chance. On Basic, we can afford to query the
+  ENTIRE known roster every run.
+- Quota math at 4 runs/day (every 6 hours): 56 flights x 4 runs x 30 days
+  = 6,720 requests/month, comfortably under the 10,000 limit, leaving a
+  ~3,280/month buffer for manual runs, backfills, or ad-hoc DL9xxx checks.
+- rotation_state.json is no longer needed (nothing rotates anymore) but is
+  left alone / ignored rather than deleted, in case you want to revert.
+- Manual single-flight lookups (MANUAL_FLIGHT_NUMBER) still work exactly
+  as before and don't count against the scheduled run's roster query.
 
-MANUAL_FLIGHT_NUMBER modes (set via the workflow_dispatch input):
-  - blank  -> full roster sweep (the default now — see quota math above)
-  - a single flight number -> e.g. "DL8", queries just that one flight,
-    useful for a quick spot-check without waiting on the full sweep
+WHY 4x/DAY AND NOT MORE: 6x/day would be 10,080/month — just over budget
+with zero room for anything else. 4x/day (6,720/month) was chosen to leave
+real margin rather than run right up against the limit.
+
+NOTE ON flight_date: your paid tier may now support Aviationstack's
+`flight_date` query parameter (confirmed blocked on free tier — see
+Master Reference doc). This script does NOT use it yet, since it hasn't
+been verified against your specific plan. If you confirm it works, targeted
+historical/future-date queries could replace some of the "current instance
+only" guessing this script still relies on. Test with one manual call
+before wiring it in here.
 """
 
 import json
 import os
-import time
 import urllib.request
 import urllib.parse
 from datetime import datetime, timezone
@@ -33,7 +40,7 @@ from datetime import datetime, timezone
 API_KEY = os.environ["AVIATIONSTACK_API_KEY"]
 
 # Full known Delta A350 flight-number roster (from the FlightRadar24-derived
-# rotation study). Every run queries all of these now — see quota math above.
+# rotation study). On the paid tier, EVERY number here is queried EVERY run.
 FULL_ROSTER = [
     "DL7", "DL8", "DL11", "DL12", "DL26", "DL27", "DL38", "DL39", "DL40", "DL41",
     "DL68", "DL69", "DL70", "DL71", "DL82", "DL83", "DL88", "DL89", "DL95", "DL96",
@@ -43,10 +50,16 @@ FULL_ROSTER = [
     "DL210", "DL211", "DL274", "DL275", "DL280", "DL281", "DL290", "DL291",
     "DL327", "DL388", "DL389", "DL763",
 ]
+# Note: DL9xxx repositioning/recovery numbers (DL9890, DL9912, DL9968,
+# DL9969, DL9970) are DELIBERATELY excluded from the automated roster — this
+# is a design choice, not a quota constraint. See conversation history: these
+# are relocation/supplementary flights, tracked manually when relevant, not
+# swept automatically.
 
 DATA_DIR = "data"
 HISTORY_PATH = os.path.join(DATA_DIR, "flights_history.jsonl")
 LATEST_PATH = os.path.join(DATA_DIR, "latest.json")
+QUOTA_LOG_PATH = os.path.join(DATA_DIR, "quota_usage_log.jsonl")
 
 
 def fetch_flight(flight_iata):
@@ -59,32 +72,45 @@ def fetch_flight(flight_iata):
         return json.loads(resp.read().decode())
 
 
+def log_quota_usage(mode, n_requests, fetch_ts):
+    """Append a small record of how many requests this run used, so you can
+    track actual monthly usage against the 10,000 budget over time."""
+    os.makedirs(DATA_DIR, exist_ok=True)
+    with open(QUOTA_LOG_PATH, "a") as f:
+        f.write(json.dumps({
+            "fetch_timestamp_utc": fetch_ts,
+            "mode": mode,
+            "requests_used": n_requests,
+        }) + "\n")
+
+
 def main():
     os.makedirs(DATA_DIR, exist_ok=True)
 
     manual_flight = os.environ.get("MANUAL_FLIGHT_NUMBER", "").strip().upper()
 
-    if manual_flight in ("", "ALL"):
-        # Default: full roster sweep every run — see quota math in the docstring.
-        # "ALL" is accepted as an explicit alias for the same behavior, since
-        # that was the documented full-sweep trigger before this plan upgrade
-        # and the workflow's own UI text still says so.
-        batch = FULL_ROSTER
-        mode = "full_sweep"
-    else:
-        # Single-flight spot-check: query just this one, don't touch anything else.
+    if manual_flight:
+        # Manual on-demand lookup: query exactly this one flight. Doesn't
+        # touch the scheduled roster run at all.
         batch = [manual_flight]
         mode = "manual"
+    else:
+        # Full roster, every scheduled run. No rotation, no sampling.
+        batch = FULL_ROSTER
+        mode = "full_roster"
 
     fetch_ts = datetime.now(timezone.utc).isoformat()
     latest_results = []
+    n_requests = 0
 
     for flight_iata in batch:
         try:
             result = fetch_flight(flight_iata)
             records = result.get("data", [])
+            n_requests += 1
         except Exception as e:
             records = []
+            n_requests += 1  # the attempt still cost a request even if it failed
             print(f"WARNING: fetch failed for {flight_iata}: {e}")
 
         for rec in records:
@@ -95,9 +121,6 @@ def main():
             with open(HISTORY_PATH, "a") as f:
                 f.write(json.dumps(rec) + "\n")
 
-        if mode == "full_sweep":
-            time.sleep(0.3)  # light pacing across a 56-request sweep
-
     with open(LATEST_PATH, "w") as f:
         json.dump({
             "fetch_timestamp_utc": fetch_ts,
@@ -106,8 +129,10 @@ def main():
             "records": latest_results,
         }, f, indent=2)
 
+    log_quota_usage(mode, n_requests, fetch_ts)
+
     print(f"[{mode}] Queried {len(batch)} flight numbers, got {len(latest_results)} records, "
-          f"appended to {HISTORY_PATH}")
+          f"used {n_requests} requests, appended to {HISTORY_PATH}")
 
 
 if __name__ == "__main__":
