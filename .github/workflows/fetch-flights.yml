@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
     inputs:
       flight_number:
-        description: 'Specific flight number to check (e.g. DL172). Leave blank to run the full roster sweep instead.'
+        description: 'Specific flight number (e.g. DL172) for a single-flight check, or leave blank / type "ALL" for the full 56-flight sweep (~56 of your 10,000 monthly requests).'
         required: false
         type: string
 
