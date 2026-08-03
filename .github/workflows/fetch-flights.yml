@@ -1,18 +1,29 @@
 name: Fetch Delta A350 Flight Data
 
-# Runs on a schedule (edit the cron below) and can also be triggered manually
-# from the Actions tab in GitHub for testing.
+# STATUS (synced 3 Aug 2026): this file was out of sync with what's actually
+# live in the repo. The account moved to Aviationstack's Basic tier
+# (10,000 requests/month), fetch_flights.py was rewritten to sweep the FULL
+# 56-flight roster on every automatic run, and the cron moved from once-daily
+# to every 6 hours. This version also fixes a separate problem: exact
+# 00:00/06:00/12:00/18:00 UTC are some of the most congested slots on
+# GitHub's shared runners, which was causing multi-hour execution delays
+# (observed: runs landing ~2h40m-3h45m late). Offsetting the minute/hour
+# below reduces that queuing delay without changing the ~6-hour cadence.
+#
+# Runs on a schedule and can also be triggered manually from the Actions tab.
 on:
   schedule:
-    # Basic tier (10,000 req/month) comfortably covers a full 56-flight
-    # roster sweep 4x/day: 56 * 4 * 30 = 6,720/month, well under the cap.
-    # Runs at 00:00 / 06:00 / 12:00 / 18:00 UTC -- adjust to your preference.
-    # Cron is UTC regardless of your local time.
-    - cron: '0 0,6,12,18 * * *'
+    # Every 6 hours, offset off the round-hour marks to avoid GitHub's
+    # busiest scheduling slots: 01:17 / 07:17 / 13:17 / 19:17 UTC
+    # (~10:17 / 16:17 / 22:17 / 04:17 JST).
+    # Previously: '0 */6 * * *' (00:00/06:00/12:00/18:00 UTC exactly) —
+    # kept the same cadence, just moved off the most oversubscribed minute.
+    # Before that: '0 13 * * *' (once daily, retired when quota moved to Basic).
+    - cron: '17 1,7,13,19 * * *'
   workflow_dispatch:
     inputs:
       flight_number:
-        description: 'Specific flight number (e.g. DL172) for a single-flight check, or leave blank / type "ALL" for the full 56-flight sweep (~56 of your 10,000 monthly requests).'
+        description: 'Specific flight number to check (e.g. DL172). Leave blank (or type "ALL") for the full 56-flight roster sweep instead.'
         required: false
         type: string
 
