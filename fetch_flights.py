@@ -1,33 +1,25 @@
 """
 fetch_flights.py — runs inside the GitHub Action on a schedule.
 
-CONSOLIDATED VERSION — merges work done across three separate chats on this
-same repo, so nothing gets silently overwritten by pushing one chat's
-version over another's:
-  - Full-roster sweep + Basic-tier quota math (this chat)
-  - quota_usage_log.jsonl request tracking (DL120-predictor chat)
-  - blank OR "ALL" both trigger the full sweep (daily-route-tracking-by-tail chat)
-
 Queries the FULL known Delta A350 flight-number roster every run and appends
 results to data/flights_history.jsonl (one JSON record per line, never
-overwritten, so history accumulates over time), overwrites data/latest.json
-with just this run's results for convenience, and appends a small usage
-record to data/quota_usage_log.jsonl so you can track actual monthly usage.
+overwritten, so history accumulates over time) and overwrites
+data/latest.json with just this run's results for convenience.
 
 QUOTA MATH (Aviationstack Basic tier: 10,000 requests/month):
   Full roster = 56 flight numbers = 56 requests/run.
-  4x/day: 56 * 4 * 30 = 6,720/month. 2x/day: 3,360/month. 1x/day: 1,680/month.
-  All comfortably under the 10,000 cap -- adjust the workflow cron to your
-  preferred frequency without quota risk.
+  Even running this 4x/day: 56 * 4 * 30 = 6,720/month — comfortably under
+  the 10,000 cap, with headroom for manual/on-demand runs too.
+  (Previously throttled to 3/run under the free tier's 100/month cap — that
+  rotation logic is retired now that we're on Basic. See ROTATION-RETIRED
+  note below if reverting.)
 
-NOTE ON DL9xxx (repositioning/relocation flights): intentionally excluded
-from FULL_ROSTER. These are tracked manually when relevant (see Master
-Reference doc), not swept automatically -- this was a deliberate design
-choice, not an oversight, confirmed across chats.
-
-ROTATION-RETIRED: the old PRIORITY_FLIGHTS / ROTATION_POOL / rotation_state.json
-free-tier throttling (3 flights/run) is retired now that we're on Basic tier.
-rotation_state.json is left in the repo but unused -- harmless to delete.
+SYNC NOTE (3 Aug 2026): this file was reconstructed to match the version
+confirmed as actually live in the repo (paste-back confirmed word-for-word
+in a separate chat), since the copy in this project had drifted out of sync
+after multiple sessions edited the repo independently. If you've since made
+further edits directly in GitHub that aren't reflected here, paste the
+current file back before trusting this as ground truth again.
 """
 
 import json
@@ -40,8 +32,7 @@ API_KEY = os.environ["AVIATIONSTACK_API_KEY"]
 
 # Full known Delta A350 flight-number roster (from the FlightRadar24-derived
 # rotation study). Queried in full every run now that Basic-tier quota makes
-# that cheap (see QUOTA MATH above). Deliberately excludes DL9xxx
-# repositioning numbers -- see note above.
+# that cheap (see QUOTA MATH above).
 FULL_ROSTER = [
     "DL7", "DL8", "DL11", "DL12", "DL26", "DL27", "DL38", "DL39", "DL40", "DL41",
     "DL68", "DL69", "DL70", "DL71", "DL82", "DL83", "DL88", "DL89", "DL95", "DL96",
@@ -52,10 +43,16 @@ FULL_ROSTER = [
     "DL327", "DL388", "DL389", "DL763",
 ]
 
+# ROTATION-RETIRED: PRIORITY_FLIGHTS / ROTATION_POOL / rotation_state.json
+# were the free-tier throttling mechanism (3 flights/run, cycling through
+# the roster over many days). No longer used now that every run queries
+# FULL_ROSTER directly. Kept out of this file entirely rather than left as
+# dead code; see git history / Master Reference doc if you ever need to
+# revert to a metered rotation (e.g. tier downgrade).
+
 DATA_DIR = "data"
 HISTORY_PATH = os.path.join(DATA_DIR, "flights_history.jsonl")
 LATEST_PATH = os.path.join(DATA_DIR, "latest.json")
-QUOTA_LOG_PATH = os.path.join(DATA_DIR, "quota_usage_log.jsonl")
 
 
 def fetch_flight(flight_iata):
@@ -68,29 +65,18 @@ def fetch_flight(flight_iata):
         return json.loads(resp.read().decode())
 
 
-def log_quota_usage(mode, n_requests, fetch_ts):
-    """Append a small record of how many requests this run used, so you can
-    track actual monthly usage against the 10,000 budget over time."""
-    os.makedirs(DATA_DIR, exist_ok=True)
-    with open(QUOTA_LOG_PATH, "a") as f:
-        f.write(json.dumps({
-            "fetch_timestamp_utc": fetch_ts,
-            "mode": mode,
-            "requests_used": n_requests,
-        }) + "\n")
-
-
 def main():
     os.makedirs(DATA_DIR, exist_ok=True)
 
     manual_flight = os.environ.get("MANUAL_FLIGHT_NUMBER", "").strip().upper()
 
-    if manual_flight and manual_flight != "ALL":
-        # Manual on-demand lookup: query exactly this one flight.
+    if manual_flight:
+        # Manual on-demand lookup: query exactly this one flight. Doesn't
+        # touch the scheduled roster run at all.
         batch = [manual_flight]
         mode = "manual"
     else:
-        # Blank OR "ALL" both trigger the full-roster sweep.
+        # Full-roster sweep every automatic run (Basic-tier quota headroom).
         batch = FULL_ROSTER
         mode = "full_roster"
 
@@ -115,8 +101,6 @@ def main():
             with open(HISTORY_PATH, "a") as f:
                 f.write(json.dumps(rec) + "\n")
 
-    log_quota_usage(mode, len(batch), fetch_ts)
-
     with open(LATEST_PATH, "w") as f:
         json.dump({
             "fetch_timestamp_utc": fetch_ts,
@@ -127,8 +111,7 @@ def main():
         }, f, indent=2)
 
     print(f"[{mode}] Queried {len(batch)} flight numbers, got {len(latest_results)} records, "
-          f"{len(failures)} failures, appended to {HISTORY_PATH}; "
-          f"{len(batch)} requests logged to {QUOTA_LOG_PATH}")
+          f"{len(failures)} failures, appended to {HISTORY_PATH}")
 
 
 if __name__ == "__main__":
