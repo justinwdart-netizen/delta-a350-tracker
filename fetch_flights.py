@@ -54,6 +54,20 @@ DATA_DIR = "data"
 HISTORY_PATH = os.path.join(DATA_DIR, "flights_history.jsonl")
 LATEST_PATH = os.path.join(DATA_DIR, "latest.json")
 
+# WATCHDOG: a tiny, dedicated state file (NOT flights_history.jsonl, which
+# is already 40MB+ and growing — reading it every run just to check a gap
+# would be wasteful). Records only the timestamp of each automatic
+# (non-manual) run, so a silently-skipped cron slot shows up as a loud
+# WARNING in the very next run's log instead of going unnoticed for hours.
+LAST_RUN_PATH = os.path.join(DATA_DIR, "last_run.json")
+
+# Scheduled cadence is every 6 hours (see fetch-flights-workflow.yml).
+# Threshold is set above 6h to allow for GitHub's normal scheduling jitter
+# (observed: up to ~30-40 min late is routine) without false-alarming on
+# every run — only flags gaps consistent with a genuinely missed slot.
+EXPECTED_GAP_HOURS = 6
+GAP_WARNING_THRESHOLD_HOURS = 7.5
+
 
 def fetch_flight(flight_iata):
     params = urllib.parse.urlencode({
@@ -63,6 +77,47 @@ def fetch_flight(flight_iata):
     url = f"https://api.aviationstack.com/v1/flights?{params}"
     with urllib.request.urlopen(url, timeout=30) as resp:
         return json.loads(resp.read().decode())
+
+
+def check_for_missed_run(now, mode):
+    """WATCHDOG: compare 'now' against the last recorded automatic run and
+    print a loud WARNING if the gap is too large to be explained by normal
+    scheduling jitter -- i.e. a cron slot was likely silently skipped by
+    GitHub, not just delayed. Only evaluated for automatic (non-manual)
+    runs, since manual/on-demand runs aren't expected to land on the
+    6-hour cadence and shouldn't trip a false alarm."""
+    if mode == "manual":
+        return
+    if not os.path.exists(LAST_RUN_PATH):
+        print("WATCHDOG: no last_run.json found yet (first run since this "
+              "feature was added, or file missing) -- nothing to compare against.")
+        return
+    try:
+        with open(LAST_RUN_PATH) as f:
+            last = json.load(f)
+        last_ts = datetime.fromisoformat(last["fetch_timestamp_utc"])
+    except (json.JSONDecodeError, KeyError, ValueError) as e:
+        print(f"WATCHDOG: could not read/parse {LAST_RUN_PATH} ({e}) -- skipping gap check.")
+        return
+
+    gap_hours = (now - last_ts).total_seconds() / 3600
+    if gap_hours > GAP_WARNING_THRESHOLD_HOURS:
+        print(f"WATCHDOG WARNING: {gap_hours:.1f}h since the last automatic run "
+              f"(expected ~{EXPECTED_GAP_HOURS}h). This looks like at least one "
+              f"scheduled cron slot was skipped, not just delayed -- worth "
+              f"checking the Actions tab for a missing 'Scheduled' entry.")
+    else:
+        print(f"WATCHDOG: {gap_hours:.1f}h since the last automatic run -- within normal range.")
+
+
+def record_run(now, mode):
+    """WATCHDOG: persist this run's timestamp for the next run to compare
+    against. Only updates for automatic runs, so a manual/on-demand check
+    never resets the gap clock the next scheduled run is measured against."""
+    if mode == "manual":
+        return
+    with open(LAST_RUN_PATH, "w") as f:
+        json.dump({"fetch_timestamp_utc": now.isoformat(), "mode": mode}, f, indent=2)
 
 
 def main():
@@ -80,7 +135,11 @@ def main():
         batch = FULL_ROSTER
         mode = "full_roster"
 
-    fetch_ts = datetime.now(timezone.utc).isoformat()
+    now = datetime.now(timezone.utc)
+    fetch_ts = now.isoformat()
+
+    check_for_missed_run(now, mode)
+
     latest_results = []
     failures = []
 
@@ -109,6 +168,8 @@ def main():
             "records": latest_results,
             "failures": failures,
         }, f, indent=2)
+
+    record_run(now, mode)
 
     print(f"[{mode}] Queried {len(batch)} flight numbers, got {len(latest_results)} records, "
           f"{len(failures)} failures, appended to {HISTORY_PATH}")
