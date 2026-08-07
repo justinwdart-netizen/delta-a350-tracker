@@ -54,6 +54,40 @@ DATA_DIR = "data"
 HISTORY_PATH = os.path.join(DATA_DIR, "flights_history.jsonl")
 LATEST_PATH = os.path.join(DATA_DIR, "latest.json")
 
+# DEDUP-ON-APPEND (added 7 Aug 2026): without this, flights_history.jsonl
+# grew to 95MB / 82,668 lines with 93.3% exact-duplicate content in under
+# a week -- Aviationstack's no-flight_date query returns the same ~80
+# historical instances per flight number on every call, and this script
+# was appending all of them, every run, forever. That eventually broke
+# every future run outright (GitHub hard-rejects any single file over
+# 100MB). Fix: before appending, load the "core" content (everything
+# except our own _fetch_* metadata fields) of every record already in the
+# file into a set, and skip writing any incoming record whose core content
+# already exists. A record that's genuinely progressed (e.g. departure
+# went from null to filled) has different core content and is correctly
+# kept as a new line -- only byte-identical re-fetches are dropped.
+
+
+def load_existing_record_hashes(path):
+    """Read every existing record's core content (ignoring our own
+    _fetch_* metadata) into a set, so new fetches can be checked against
+    it before writing. Returns an empty set if the file doesn't exist yet."""
+    hashes = set()
+    if not os.path.exists(path):
+        return hashes
+    with open(path) as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                rec = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            core = {k: v for k, v in rec.items() if not k.startswith("_fetch")}
+            hashes.add(json.dumps(core, sort_keys=True))
+    return hashes
+
 # WATCHDOG: a tiny, dedicated state file (NOT flights_history.jsonl, which
 # is already 40MB+ and growing — reading it every run just to check a gap
 # would be wasteful). Records only the timestamp of each automatic
@@ -140,8 +174,17 @@ def main():
 
     check_for_missed_run(now, mode)
 
+    # DEDUP-ON-APPEND: load what's already in the file once, up front, so
+    # every record from every flight in this run can be checked cheaply
+    # against it (and against records already written earlier in this same
+    # run) rather than re-reading the file per record.
+    existing_hashes = load_existing_record_hashes(HISTORY_PATH)
+    print(f"DEDUP: loaded {len(existing_hashes)} existing unique record(s) "
+          f"from {HISTORY_PATH} to check new fetches against.")
+
     latest_results = []
     failures = []
+    duplicates_skipped = 0
 
     for flight_iata in batch:
         try:
@@ -157,6 +200,13 @@ def main():
             rec["_fetch_flight_iata_queried"] = flight_iata
             rec["_fetch_mode"] = mode
             latest_results.append(rec)
+
+            core = {k: v for k, v in rec.items() if not k.startswith("_fetch")}
+            core_hash = json.dumps(core, sort_keys=True)
+            if core_hash in existing_hashes:
+                duplicates_skipped += 1
+                continue
+            existing_hashes.add(core_hash)
             with open(HISTORY_PATH, "a") as f:
                 f.write(json.dumps(rec) + "\n")
 
@@ -172,7 +222,8 @@ def main():
     record_run(now, mode)
 
     print(f"[{mode}] Queried {len(batch)} flight numbers, got {len(latest_results)} records, "
-          f"{len(failures)} failures, appended to {HISTORY_PATH}")
+          f"{duplicates_skipped} exact duplicates skipped, {len(latest_results) - duplicates_skipped} "
+          f"new records appended, {len(failures)} failures, history file: {HISTORY_PATH}")
 
 
 if __name__ == "__main__":
